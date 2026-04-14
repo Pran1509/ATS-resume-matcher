@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Zap, RotateCcw, Sparkles, FileText, Briefcase, BarChart2, Tag, Lightbulb, Wand2 } from 'lucide-react'
+import { Zap, RotateCcw, Sparkles, BarChart2, Tag, Lightbulb, Wand2, FileText, Briefcase } from 'lucide-react'
 import { analyzeATS, optimizeResume } from './utils/atsAnalyzer'
 import ScoreCard from './components/ScoreCard'
 import KeywordGrid from './components/KeywordGrid'
 import TipsPanel from './components/TipsPanel'
 import OptimizedResume from './components/OptimizedResume'
+import FileUpload from './components/FileUpload'
 
 const TABS = [
   { id: 'score', label: 'Score', icon: BarChart2 },
@@ -12,42 +13,6 @@ const TABS = [
   { id: 'tips', label: 'Tips', icon: Lightbulb },
   { id: 'optimized', label: 'Optimized Resume', icon: Wand2 },
 ]
-
-const SAMPLE_RESUME = `Jane Smith
-jane@email.com | LinkedIn: linkedin.com/in/janesmith | (555) 123-4567
-
-SUMMARY
-Results-driven software engineer with 4 years of experience building web applications.
-
-EXPERIENCE
-Software Engineer — Acme Corp (2021–Present)
-• Built React dashboards used by 10,000 users
-• Wrote REST APIs with Node.js and Express
-• Worked in an Agile team using Jira
-
-Junior Developer — StartupXYZ (2019–2021)
-• Maintained legacy PHP application
-• Wrote unit tests with Jest
-
-SKILLS
-JavaScript, React, Node.js, HTML, CSS, Git, SQL
-
-EDUCATION
-B.Sc. Computer Science — State University, 2019`
-
-const SAMPLE_JD = `Senior Frontend Engineer — TechCorp
-
-We're looking for a Senior Frontend Engineer to join our growing team.
-
-Requirements:
-• 4+ years of experience with React and TypeScript
-• Strong knowledge of modern CSS, Tailwind CSS, and responsive design
-• Experience with REST APIs and GraphQL
-• Familiarity with CI/CD pipelines and Docker
-• Experience with testing frameworks (Jest, Cypress)
-• Strong communication and collaboration skills in an Agile/Scrum environment
-• Experience with performance optimization and Core Web Vitals
-• Bonus: experience with Next.js or Remix`
 
 export default function App() {
   const [resume, setResume] = useState('')
@@ -61,7 +26,7 @@ export default function App() {
 
   async function handleAnalyze() {
     if (!resume.trim() || !jobDesc.trim()) {
-      setError('Please paste both your resume and the job description.')
+      setError('Please provide both your resume and the job description.')
       return
     }
     setError('')
@@ -103,12 +68,6 @@ export default function App() {
     setActiveTab('score')
   }
 
-  function loadSample() {
-    setResume(SAMPLE_RESUME)
-    setJobDesc(SAMPLE_JD)
-    setError('')
-  }
-
   return (
     <div className="min-h-screen bg-ink" style={{ fontFamily: "'DM Sans', sans-serif" }}>
       {/* Header */}
@@ -121,12 +80,6 @@ export default function App() {
             <span className="font-display font-bold text-lg text-frost">ATS Resume Matcher</span>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              onClick={loadSample}
-              className="text-xs text-mist hover:text-frost-dim transition-colors px-3 py-1.5 rounded-lg hover:bg-ink-700"
-            >
-              Load Sample
-            </button>
             {result && (
               <button
                 onClick={handleReset}
@@ -141,37 +94,31 @@ export default function App() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Inputs */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-          {/* Resume */}
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 text-xs font-mono text-mist uppercase tracking-widest">
-              <FileText size={12} />
-              Your Resume
-            </label>
-            <textarea
-              value={resume}
-              onChange={(e) => setResume(e.target.value)}
-              placeholder="Paste your resume here (plain text)…"
-              rows={12}
-              className="w-full bg-ink-700 border border-ink-600 rounded-xl px-4 py-3 text-sm text-frost-dim placeholder-mist/50 focus:outline-none focus:border-acid/50 focus:ring-1 focus:ring-acid/20 transition-colors"
-            />
-          </div>
+        {/* Upload panels */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <FileUpload
+            label="Your Resume"
+            icon={FileText}
+            value={resume}
+            onChange={setResume}
+            placeholder="Upload or paste your resume..."
+          />
+          <FileUpload
+            label="Job Description"
+            icon={Briefcase}
+            value={jobDesc}
+            onChange={setJobDesc}
+            placeholder="Upload or paste the job description..."
+          />
+        </div>
 
-          {/* Job Description */}
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 text-xs font-mono text-mist uppercase tracking-widest">
-              <Briefcase size={12} />
-              Job Description
-            </label>
-            <textarea
-              value={jobDesc}
-              onChange={(e) => setJobDesc(e.target.value)}
-              placeholder="Paste the job description here…"
-              rows={12}
-              className="w-full bg-ink-700 border border-ink-600 rounded-xl px-4 py-3 text-sm text-frost-dim placeholder-mist/50 focus:outline-none focus:border-acid/50 focus:ring-1 focus:ring-acid/20 transition-colors"
-            />
-          </div>
+        {/* Supported formats note */}
+        <div className="mb-4 flex items-center gap-2 text-xs text-mist">
+          <span>Supported formats:</span>
+          <span className="font-mono px-1.5 py-0.5 bg-ink-700 rounded text-frost-dim">PDF</span>
+          <span className="font-mono px-1.5 py-0.5 bg-ink-700 rounded text-frost-dim">DOCX</span>
+          <span className="font-mono px-1.5 py-0.5 bg-ink-700 rounded text-frost-dim">TXT</span>
+          <span className="text-mist">— every character, space, and punctuation mark is preserved</span>
         </div>
 
         {/* Error */}
@@ -181,17 +128,17 @@ export default function App() {
           </div>
         )}
 
-        {/* Analyze button */}
+        {/* Action buttons */}
         <div className="flex gap-3 mb-8">
           <button
             onClick={handleAnalyze}
-            disabled={analyzing}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-display font-semibold text-sm bg-acid text-ink hover:bg-acid-dim disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            disabled={analyzing || !resume.trim() || !jobDesc.trim()}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-display font-semibold text-sm bg-acid text-ink hover:bg-acid-dim disabled:opacity-40 disabled:cursor-not-allowed transition-all"
           >
             {analyzing ? (
               <>
                 <div className="w-4 h-4 border-2 border-ink/30 border-t-ink rounded-full animate-spin" />
-                Analyzing…
+                Analyzing...
               </>
             ) : (
               <>
@@ -210,7 +157,7 @@ export default function App() {
               {optimizing ? (
                 <>
                   <div className="w-4 h-4 border-2 border-acid/30 border-t-acid rounded-full animate-spin" />
-                  Optimizing…
+                  Optimizing...
                 </>
               ) : (
                 <>
@@ -225,7 +172,6 @@ export default function App() {
         {/* Results */}
         {(result || optimizing) && (
           <div className="animate-slide-up">
-            {/* Tabs */}
             <div className="flex gap-1 mb-6 border-b border-ink-700">
               {TABS.map((tab) => {
                 const Icon = tab.icon
@@ -252,7 +198,6 @@ export default function App() {
               })}
             </div>
 
-            {/* Tab content */}
             <div className="max-w-2xl">
               {activeTab === 'score' && <ScoreCard result={result} />}
               {activeTab === 'keywords' && <KeywordGrid keywords={result?.keywords} />}
@@ -270,10 +215,8 @@ export default function App() {
             <div className="w-16 h-16 rounded-2xl bg-ink-700 border border-ink-600 flex items-center justify-center mx-auto mb-4">
               <Zap size={24} className="text-mist/50" />
             </div>
-            <p className="text-sm">Paste your resume and a job description above to get started.</p>
-            <button onClick={loadSample} className="mt-3 text-xs text-acid/70 hover:text-acid underline underline-offset-2">
-              Or try with a sample →
-            </button>
+            <p className="text-sm mb-1">Upload your resume and a job description to get started.</p>
+            <p className="text-xs text-mist/60">Supports PDF, DOCX, and TXT — reads every character precisely.</p>
           </div>
         )}
       </main>
