@@ -1,86 +1,36 @@
-# 🎯 ATS Resume Matcher
+# 🎯 ResumeAI — Professional ATS Resume Platform
 
-> Match your resume to any job description, get an ATS compatibility score, and auto-optimize your resume to beat the bots.
+> Beat the ATS, land the interview. AI-powered resume analysis, builder, and optimizer.
 
-![ATS Resume Matcher](https://img.shields.io/badge/ATS-Resume%20Matcher-6366f1?style=for-the-badge)
-![Claude AI](https://img.shields.io/badge/Powered%20by-Claude%20AI-orange?style=for-the-badge)
-![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-3.0.0-brightgreen?style=for-the-badge)
+![Firebase](https://img.shields.io/badge/auth-Firebase-orange?style=for-the-badge)
+![Claude AI](https://img.shields.io/badge/AI-Claude-blue?style=for-the-badge)
 
 ---
 
 ## ✨ Features
 
-- **📊 ATS Score** — Get a real-time compatibility score (0–100) between your resume and a job description
-- **🔍 Keyword Analysis** — See which keywords are present, missing, or partially matched
-- **🤖 AI Optimization** — One-click to rewrite your resume to be fully ATS-friendly
-- **📋 Section Breakdown** — Detailed scoring for Skills, Experience, Education, and Keywords
-- **💡 Actionable Tips** — Specific suggestions to improve your resume for each job
-- **📥 Export** — Download your optimized resume as plain text ready to paste
+- **🔐 Google Login** — Sign in with Google via Firebase Auth
+- **🌙 Dark / Light / System Theme** — Toggle from any page
+- **📊 ATS Score Analyzer** — Real-time compatibility score with keyword breakdown
+- **🤖 AI Resume Optimizer** — One-click AI rewrite with missing keywords added
+- **📝 Resume Builder** — Word-style editor with 4 templates and 5 sample resumes
+- **✉️ Cover Letter Generator** — AI writes tailored cover letters in 4 tones
+- **📁 PDF & DOCX Upload** — Every character, space, and dot preserved
+- **💾 Download** — Export as .docx or .txt
+- **🆓 2 Free Uses** — Guests can analyze 2 resumes before login required
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js 18+
-- An Anthropic API key ([get one here](https://console.anthropic.com))
-
-### Installation
-
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/ats-resume-matcher.git
-cd ats-resume-matcher
-
-# Install dependencies
+git clone https://github.com/YOUR_USERNAME/ATS-resume-matcher.git
+cd ATS-resume-matcher
 npm install
-
-# Set up your API key
 cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
-
-# Start the development server
+# Add your VITE_ANTHROPIC_API_KEY to .env
 npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18 + Vite |
-| Styling | Tailwind CSS |
-| AI Backend | Anthropic Claude API (claude-sonnet-4-20250514) |
-| Build | Vite |
-
----
-
-## 📁 Project Structure
-
-```
-ats-resume-matcher/
-├── src/
-│   ├── App.jsx              # Main application component
-│   ├── main.jsx             # Entry point
-│   ├── components/
-│   │   ├── ResumeInput.jsx  # Resume paste/upload area
-│   │   ├── JobInput.jsx     # Job description input
-│   │   ├── ScoreCard.jsx    # ATS score display
-│   │   ├── KeywordGrid.jsx  # Keyword match visualization
-│   │   ├── OptimizedResume.jsx # AI-rewritten resume output
-│   │   └── TipsPanel.jsx    # Improvement suggestions
-│   └── utils/
-│       └── atsAnalyzer.js   # Claude API integration
-├── public/
-├── index.html
-├── .env.example
-├── package.json
-├── tailwind.config.js
-└── vite.config.js
 ```
 
 ---
@@ -88,42 +38,51 @@ ats-resume-matcher/
 ## 🔑 Environment Variables
 
 ```env
-VITE_ANTHROPIC_API_KEY=your_anthropic_api_key_here
-```
-
-> ⚠️ **Never commit your `.env` file.** It's already in `.gitignore`.
-
----
-
-## 📸 How It Works
-
-1. **Paste your resume** in the left panel (plain text or formatted)
-2. **Paste the job description** in the right panel
-3. Click **Analyze** — Claude reads both and returns:
-   - An ATS compatibility score
-   - Matched / missing / partial keywords
-   - Section-by-section breakdown
-   - Specific improvement tips
-4. Click **Optimize Resume** to get an AI-rewritten version tailored to the job
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please open an issue first to discuss what you'd like to change.
-
-```bash
-# Create a feature branch
-git checkout -b feature/your-feature-name
-
-# Make your changes, then
-git commit -m "feat: add your feature"
-git push origin feature/your-feature-name
-# Open a pull request
+VITE_ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ---
+
+## 🛠 Tech Stack
+
+| | Technology |
+|---|---|
+| Frontend | React 18 + Vite |
+| Styling | Tailwind CSS + CSS Variables |
+| Auth | Firebase Google Auth |
+| Database | Cloud Firestore |
+| AI | Anthropic Claude API |
+| File Parsing | PDF.js + Mammoth.js |
+| Routing | React Router v6 |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── pages/
+│   ├── LandingPage.jsx     # Hero + features
+│   ├── LoginPage.jsx       # Google sign-in
+│   ├── DashboardPage.jsx   # User dashboard
+│   ├── ATSPage.jsx         # ATS analyzer
+│   ├── BuilderPage.jsx     # Resume builder
+│   └── CoverLetterPage.jsx # Cover letter generator
+├── components/
+│   └── ui/
+│       ├── Navbar.jsx
+│       └── ThemeSwitcher.jsx
+├── hooks/
+│   ├── useAuth.jsx
+│   └── useTheme.jsx
+├── utils/
+│   ├── firebase.js
+│   ├── atsAnalyzer.js
+│   └── fileParser.js
+└── data/
+    └── sampleResumes.js
+```
 
 ## 📄 License
 
-MIT © 2025 — see [LICENSE](LICENSE) for details.
+MIT © 2025
