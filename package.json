@@ -1,7 +1,6 @@
 {
-  "name": "ats-resume-matcher",
-  "version": "3.0.0",
-  "description": "Professional ATS Resume Matcher with AI optimization, resume builder, cover letter generator, and Google login",
+  "name": "resumeai",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
